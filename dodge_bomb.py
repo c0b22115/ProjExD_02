@@ -3,7 +3,14 @@ import sys
 import pygame as pg
 
 
-WIDTH, HEIGHT = 1100, 600
+WIDTH, HEIGHT = 1600, 900
+
+delta = {
+    pg.K_UP: (0, -5), 
+    pg.K_DOWN: (0, +5),
+    pg.K_LEFT: (-5, 0),
+    pg.K_RIGHT: (+5, 0)
+}
 
 
 def main():
@@ -22,14 +29,22 @@ def main():
 
     clock = pg.time.Clock()
     tmr = 0
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+            
+        key_lst = pg.key.get_pressed()
+        sum_mv = [0, 0]
+        for k, tpl in delta.items():
+            if key_lst[k]:#キーが押されたら
+               sum_mv[0] += tpl[0]
+               sum_mv[1] += tpl[1]
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, [900, 400])
-        bb_rct.move_ip(vx, vy)
+        bb_rct.move_ip(vx, vy)#練習２:爆弾を移動させる
         screen.blit(bb_img, bb_rct)
         pg.display.update()
         tmr += 1
