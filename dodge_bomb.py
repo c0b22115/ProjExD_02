@@ -55,7 +55,7 @@ def main():
         (0, 5):pg.transform.rotozoom(kk_img, 90, 1.0),
         (5, 5):pg.transform.rotozoom(kk_img, 45, 1.0)
     }
-    accs = [a for a in range(1, 100)]
+    accs = [a for a in range(1, 100)]#赤丸に加速を追加
     clock = pg.time.Clock()
     tmr = 0
     fonto = pg.font.Font(None, 80)
@@ -90,7 +90,7 @@ def main():
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         """
-        演習課題１のための
+        演習課題１の実行
         """
         if(sum_mv[0] >= 5):
             kk_img = pg.transform.flip(kk_img, False, True)
