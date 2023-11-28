@@ -4,7 +4,7 @@ import pygame as pg
 import time
 
 
-WIDTH, HEIGHT = 1200, 600
+WIDTH, HEIGHT = 1250, 650
 
 delta = {
     pg.K_UP: (0, -5), 
@@ -30,7 +30,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
-    bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
+    bg_img = pg.image.load("ex02/fig/rocky_mountain01.png")
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_img2 = pg.image.load("ex02/fig/6.png")
@@ -59,7 +59,7 @@ def main():
     clock = pg.time.Clock()
     tmr = 0
     fonto = pg.font.Font(None, 80)
-    moji = fonto.render("GAME OVER", True, (255, 255, 255))
+    moji = fonto.render("GAME OVER", True, (0, 0, 0))
 
     while True:
         for event in pg.event.get():
