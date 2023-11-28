@@ -42,6 +42,17 @@ def main():
     bb_rct.centery = random.randint(0, HEIGHT)
     vx, vy = +5, +5
 
+    kk_zis = {
+        (5, 0):pg.transform.rotozoom(kk_img, 0, 1.0),
+        (5, -5):pg.transform.rotozoom(kk_img, 316, 1.0),
+        (0, -5):pg.transform.rotozoom(kk_img, 270, 1.0),
+        (-5, -5):pg.transform.rotozoom(kk_img, 315, 1.0),
+        (-5, 0):pg.transform.rotozoom(kk_img, 0, 1.0),
+        (-5, 5):pg.transform.rotozoom(kk_img, 45, 1.0),
+        (0, 5):pg.transform.rotozoom(kk_img, 90, 1.0),
+        (5, 5):pg.transform.rotozoom(kk_img, 45, 1.0)
+    }
+    accs = [a for a in range(1, 100)]
     clock = pg.time.Clock()
     tmr = 0
 
@@ -61,12 +72,25 @@ def main():
                sum_mv[0] += tpl[0]
                sum_mv[1] += tpl[1]
 
+        
+
         screen.blit(bg_img, [0, 0])
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+        """
+        演習課題１のための
+        """
+        if(sum_mv[0] >= 5):
+            kk_img = pg.transform.flip(kk_img, False, True)
+        if sum_mv != [0, 0]:
+            kk_img = kk_zis[tuple(sum_mv)]
+            if sum_mv[0] >= 5:
+                kk_img = pg.transform.flip(kk_img, True, False)
+
         screen.blit(kk_img, kk_rct)
-        bb_rct.move_ip(vx, vy)#練習２:爆弾を移動させる
+        avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
+        bb_rct.move_ip(avx, avy)#練習２:爆弾を移動させる
         yoko, tate = check_bound(bb_rct)
         if not yoko:
             vx *= -1
