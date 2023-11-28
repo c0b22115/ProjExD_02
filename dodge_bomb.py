@@ -1,6 +1,7 @@
 import random
 import sys
 import pygame as pg
+import time
 
 
 WIDTH, HEIGHT = 1200, 600
@@ -32,6 +33,8 @@ def main():
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    kk_img2 = pg.image.load("ex02/fig/6.png")
+    kk_img2 = pg.transform.rotozoom(kk_img2, 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
     bb_img = pg.Surface((20, 20))#練習１:透明のSurfaceをつくる
@@ -55,6 +58,8 @@ def main():
     accs = [a for a in range(1, 100)]
     clock = pg.time.Clock()
     tmr = 0
+    fonto = pg.font.Font(None, 80)
+    moji = fonto.render("GAME OVER", True, (255, 255, 255))
 
     while True:
         for event in pg.event.get():
@@ -62,8 +67,14 @@ def main():
                 return
             
         if kk_rct.colliderect(bb_rct):
-            print("Game Over")
-            return
+            screen.blit(bg_img, [0, 0])
+            screen.blit(kk_img2, kk_rct)
+            screen.blit(moji, [400, 400])
+            pg.display.update()
+            print("ゲームオーバー")
+            time.sleep(5)
+            pg.quit()
+            sys.exit()
             
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
