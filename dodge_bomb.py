@@ -3,7 +3,7 @@ import sys
 import pygame as pg
 
 
-WIDTH, HEIGHT = 1600, 900
+WIDTH, HEIGHT = 1200, 600
 
 delta = {
     pg.K_UP: (0, -5), 
@@ -12,6 +12,19 @@ delta = {
     pg.K_RIGHT: (+5, 0)
 }
 
+def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
+    """
+    オブジェクトが画面内or画面外を判定し、真理値タプルを返す関数
+    引数 rct:こうかとんor爆弾SurfaceのRect
+    戻り値:横横行、縦方向判定結果(画面内:True/画面外:False)
+    """
+    
+    yoko, tate = True, True
+    if rct.left < 0 or WIDTH < rct.right:#横方向はみだし判定
+        yoko = False
+    if rct.top < 0 or HEIGHT < rct.bottom:#縦方向はみだし判定
+        tate = False
+    return yoko, tate
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -19,6 +32,8 @@ def main():
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    kk_rct = kk_img.get_rect()
+    kk_rct.center = 900, 400
     bb_img = pg.Surface((20, 20))#練習１:透明のSurfaceをつくる
     bb_img.set_colorkey((0, 0, 0))
     pg.draw.circle(bb_img, (255, 0, 0), (10, 10), 10)
@@ -43,8 +58,16 @@ def main():
                sum_mv[1] += tpl[1]
 
         screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img, [900, 400])
+        kk_rct.move_ip(sum_mv[0], sum_mv[1])
+        if check_bound(kk_rct) != (True, True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+        screen.blit(kk_img, kk_rct)
         bb_rct.move_ip(vx, vy)#練習２:爆弾を移動させる
+        yoko, tate = check_bound(bb_rct)
+        if not yoko:
+            vx *= -1
+        if not tate:
+            vy *= -1
         screen.blit(bb_img, bb_rct)
         pg.display.update()
         tmr += 1
